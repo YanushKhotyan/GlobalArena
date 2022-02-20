@@ -1,6 +1,5 @@
 package players;
 
-import players.common.Characteristic;
 import players.common.RangeValue;
 import skills.Damage;
 import skills.Skill;
@@ -9,39 +8,31 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static players.common.Characteristic.*;
+
 public class Archer implements Player {
 
+    private List<Skill> skills;
     private RangeValue rangeValue;
 
-    private ArrayList<Object> characteristics;
-
-    public RangeValue getRangeValue() {
-        return rangeValue;
-    }
-
-    public void setRangeValue(RangeValue rangeValue) {
-        this.rangeValue = rangeValue;
-    }
-
-    public ArrayList getCharacteristics() {
-        return characteristics;
-    }
-
-    public void setCharacteristics(ArrayList characteristics) {
-        this.characteristics = characteristics;
-    }
+    // TODO: Change the array type from Integer to RangeValue;
+    private ArrayList<Integer> characteristics;
 
     public Archer() {
-        rangeValue = new RangeValue(100);
-
-        List<Skill> skills = new ArrayList<>();
-        skills.add(new Damage(this,15));
-
-        rangeValue.setSkills(skills);
         characteristics = new ArrayList<>();
-        characteristics.add(Characteristic.MAX_HEALTH_INDEX.ordinal(), 100);
-        characteristics.add(Characteristic.CURRENT_HEALTH_INDEX.ordinal(), rangeValue.getCurrentHealth());
-        characteristics.add(Characteristic.SKILLS_INDEX.ordinal(), rangeValue.getSkills());
+
+        characteristics.add(MAX_HEALTH_INDEX.ordinal(), 100);
+        characteristics.add(DAMAGE_INDEX.ordinal(), 15);
+        characteristics.add(HEAL_INDEX.ordinal(), 0);
+        characteristics.add(ATTACK_RESISTANCE_INDEX.ordinal(), 0);
+
+        rangeValue = new RangeValue(
+                characteristics.get(MAX_HEALTH_INDEX.ordinal()),
+                characteristics.get(ATTACK_RESISTANCE_INDEX.ordinal()),
+                characteristics.get(HEAL_INDEX.ordinal()));
+
+        skills = new ArrayList<>();
+        skills.add(new Damage(this, DAMAGE_INDEX.ordinal()));
     }
 
     @Override
@@ -63,6 +54,6 @@ public class Archer implements Player {
 
     @Override
     public List<Skill> getSkill() {
-        return rangeValue.getSkills();
+        return skills;
     }
 }

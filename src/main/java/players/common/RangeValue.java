@@ -1,45 +1,34 @@
 package players.common;
 
-import skills.Skill;
-
-import java.util.List;
-
 public final class RangeValue {
-    private final int MIN_HEALTH = 0;
+    private final static int MIN_HEALTH = 0;
 
-    private final int maxHealth;
+    private final Integer maxHealth;
 
-    private int currentHealth;
+    private final Integer attackResistance;
 
-    private List<Skill> skills;
+    private final Integer heal;
 
-    public List<Skill> getSkills() {
-        return skills;
-    }
+    private Integer currentHealth;
 
-    public void setSkills(List<Skill> skills) {
-        this.skills = skills;
-    }
-
-    public Integer getCurrentHealth() {
-        return currentHealth;
+    public RangeValue(Integer health, Integer attackResistance, Integer heal) {
+        this.maxHealth = health;
+        this.currentHealth = health;
+        this.attackResistance = attackResistance;
+        this.heal = heal;
     }
 
     public void increaseCurrentHealth(Integer damage) {
-        this.currentHealth = Math.min(this.currentHealth + damage, maxHealth);
+        this.currentHealth = Math.min(currentHealth + damage, maxHealth);
     }
 
     public void decreaseCurrentHealth(Integer damage) {
-        this.currentHealth = Math.max(this.currentHealth - damage, MIN_HEALTH);
-    }
-
-    public RangeValue(Integer health) {
-        this.maxHealth = health;
-        // On init step maxHealth equals currentHealth.
-        this.currentHealth = health;
+        if(damage > attackResistance){
+            this.currentHealth = Math.max(this.currentHealth - (damage - attackResistance) , MIN_HEALTH);
+        }
     }
 
     public Boolean isDead(){
-        return currentHealth <= 0;
+        return currentHealth <= MIN_HEALTH;
     }
 }

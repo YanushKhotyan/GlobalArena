@@ -4,11 +4,12 @@ import arenas.ArenaPVP;
 import players.Player;
 
 public final class Damage implements Skill {
-    private final int damage = 15;
+    private final Integer damage;
     private final Player owner;
 
     public Damage(Player owner, Integer damage) {
         this.owner = owner;
+        this.damage = damage;
     }
 
     @Override
